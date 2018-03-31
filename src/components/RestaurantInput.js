@@ -1,45 +1,53 @@
 import React, { Component } from 'react';
 import { addRestaurant } from '../actions/restaurants';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux'; /* code change */
+import { bindActionCreators } from 'redux';
 
-class RestaurantInput extends Component {
+export class RestaurantInput extends Component {
 
-  state = {
-    name: '',
-    location: '',
+  constructor(props){
+    super(props);
+
+    this.state = {
+      name: '', location: ''
+    };
   }
 
-  handleOnChange = (event) => {
+  handleOnNameChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      name: event.target.value
     });
   }
 
-  handleOnSubmit = (event) => {
+  handleOnLocationChange(event) {
+    this.setState({
+      location: event.target.value
+    });
+  }
+
+  handleOnSubmit(event) {
     event.preventDefault();
     this.props.addRestaurant(this.state);
     this.setState({name: '', location: ''})
   }
 
   render() {
-    console.log("RestaurantInput props:", this.props)
     return(
-      <form onSubmit={this.handleOnSubmit}>
+      <form onSubmit={(event) => this.handleOnSubmit(event)}>
         <p>
           <input
             type="text"
-            onChange={this.handleOnChange}
-            name={'name'}
+            onChange={(event) => this.handleOnNameChange(event)}
             value={this.state.name}
+            name={'name'}
             placeholder="restaurant name" />
         </p>
         <p>
           <input
             type="text"
-            onChange={(event) => this.handleOnChange(event)}
-            name={'location'}
+            onChange={(event) => this.handleOnLocationChange(event)}
             value={this.state.location}
+            name={'location'}
             placeholder="location" />
         </p>
         <input type="submit" />
